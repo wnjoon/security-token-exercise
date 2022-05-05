@@ -45,7 +45,7 @@ module.exports = {
     },
     ganache: {
       host: 'localhost',
-      port: 7545,
+      port: 8545,
       network_id: '*', // eslint-disable-line camelcase
     },
     dotEnvNetwork: {
@@ -56,7 +56,7 @@ module.exports = {
       network_id: parseInt(process.env.NETWORK_ID) || '*', // eslint-disable-line camelcase
     },
   },
-  plugins: ["solidity-coverage", "truffle-contract-size", "truffle-plugin-verify"],
+  plugins: ["solidity-coverage", "truffle-contract-size", "truffle-plugin-verify", "@chainsafe/truffle-plugin-abigen"],
   compilers: {
     solc: {
       version: '0.8.7',

@@ -1,2 +1,5 @@
 # Ignored directories
+UniversalToken/build
 UniversalToken/node_modules
+UniversalToken/package-lock.json
+
