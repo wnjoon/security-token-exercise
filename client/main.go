@@ -25,7 +25,7 @@ func main() {
 	fmt.Println(erc20TotalSupply)
 
 	// Get ERC20 token balance of account
-	erc20Balance := erc20controller.GetErc20Balance(erc20, user1.Address)
+	erc20Balance := erc20controller.GetBalance_erc20(erc20, user1.Address)
 	fmt.Println(erc20Balance)
 
 	// _ = client // we'll use this in the upcoming sections

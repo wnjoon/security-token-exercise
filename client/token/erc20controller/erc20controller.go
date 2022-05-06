@@ -20,7 +20,7 @@ func GetContract_erc20(client *ethclient.Client) *erc20.Erc20 {
 }
 
 // Return ERC20 balance of user
-func GetErc20Balance(instance *erc20.Erc20, _address string) *big.Int {
+func GetBalance_erc20(instance *erc20.Erc20, _address string) *big.Int {
 	address := common.HexToAddress(_address)
 	bal, err := instance.BalanceOf(&bind.CallOpts{}, address)
 	util.Perror(err)
@@ -36,5 +36,28 @@ func GetTotalSupply_erc20(instance *erc20.Erc20) *big.Int {
 
 // Mint Token (ERC20)
 func Mint_erc20(client *ethclient.Client, instance *erc20.Erc20, from *account.User, to *account.User, amount *big.Int) {
+
+	// // Get PrivateKey
+	// privateKey, err := crypto.HexToECDSA(from.PrivateKey)
+	// util.Perror(err)
+
+	// // Get PublicKey from PrivateKey
+	// publicKey := privateKey.Public()
+	// publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+	// if !ok {
+	// 	log.Fatal("cannot assert type: publicKey is not of type *ecdsa.PublicKey")
+	// }
+
+	// // Get Address of from(Caller)
+	// fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
+
+	// // Get Nonce [TODO : SPLIT]
+	// nonce, err := client.PendingNonceAt(context.Background(), fromAddress)
+	// util.Perror(err)
+
+	// // Allocate Gas Price [TODO : SPLIT]
+	// value := big.NewInt(0)
+	// gasPrice, err := client.SuggestGasPrice(context.Background())
+	// util.Perror(err)
 
 }
