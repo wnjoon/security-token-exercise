@@ -1,7 +1,9 @@
 # Security-token-exercise
 Exercise source development of Security token based on ERC-1400 and others
 
-## ACCOUNTS 
+## 1. Network
+
+### 1.1. Ganache
 
 Generate account from ganache using deterministic option (non-change accounts due to pre-defined mnemonic)  
 Accounts Information : [account.go](/client/account/account.go)
@@ -38,6 +40,35 @@ Call Gas Limit
 ==================
 9007199254740991
 ```
+
+### 1.2. [Quorum](/quorum/)
+
+Building Quorum network using 3 nodes based on Raft consensus.  
+
+> <u>3 or 5 nodes is the most common.</u> If you want to scale across more than 3/5/7 nodes you typically just shard the cluster, where each shard runs a completely separate and independent instance of the Raft protocol. If you need to scale for fault tolerance, you will have to relax consistency requirements.
+
+#### 1.2.1. Configuration
+- Building a local network based on the [7-nodes example](https://github.com/ConsenSys/quorum-examples).
+- Just construct 3 nodes for [Raft consensus](https://raft.github.io/) to be simple.
+- Don't use tx manager.
+- Port information
+   1. quorum_node1_1
+      - RPC Port: 22000
+      - WS Port: 23000
+   2. quorum_node2_1
+      - RPC Port: 22001
+      - WS Port: 23001
+   3. quorum_node3_1
+      - RPC Port: 22002
+      - WS Port: 23002
+
+#### 1.2.2. Commands
+- Start network: ./start.sh
+- Stop network: ./stop.sh
+- Access to geth of nodes: ./attach.sh ${NODE_ID} 
+   - Example: ./attach.sh 1 -> Attach to container "quorum_node1_1"
+- Get logs of container: ./log.sh ${NODE_ID}
+   - Example: ./log.sh 2 -> Get logs of container "quorum_node2_1"
 
 <br>
 
