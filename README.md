@@ -72,7 +72,7 @@ Building Quorum network using 3 nodes based on Raft consensus.
 
 <br>
 
-## Smart Contracts
+## 2. Smart Contracts
 
 Add "@chainsafe/truffle-plugin-abigen" in truffle-config.js -> plugins for "abigen"
 
@@ -86,7 +86,7 @@ $ truffle migrate --network ganache
 
 <br>
 
-## Generate .go AbiBinding
+## 3. Generate .go AbiBinding
 
 [getBindingToken.sh](/UniversalToken/getBindingToken.sh)
 
@@ -96,7 +96,7 @@ $ truffle migrate --network ganache
 
 <br>
 
-## Client Information
+## 4. Client Information
 
 ### [account](/client/account/account.go)
 
