@@ -2,7 +2,6 @@
 pragma solidity ^0.8.7;
 
 import "../interfaces/IERC20.sol";
-import "../utils/math/SafeMath.sol";
 
 abstract contract AERC20 is IERC20 {
     string  private _name;
