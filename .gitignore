@@ -3,7 +3,10 @@ UniversalToken/build
 UniversalToken/node_modules
 UniversalToken/package-lock.json
 
-smartcontract/build
-smartcontract/node_modules
-smartcontract/package-lock.json
+smartcontract_truffle/build
+smartcontract_truffle/node_modules
+smartcontract_truffle/package-lock.json
+
+smartcontract_hardhat/build
+smartcontract_hardhat/node_modules
 
