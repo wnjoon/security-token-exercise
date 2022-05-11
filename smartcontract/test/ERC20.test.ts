@@ -1,5 +1,5 @@
 import { waffle } from "hardhat";
-import { expect, use } from "chai";
+import { expect } from "chai";
 
 
 import ERC20TokenArtifact from "../artifacts/contracts/ERC20Burnable.sol/ERC20Burnable.json";
@@ -10,14 +10,13 @@ const provider = waffle.provider;
 
 
 describe("ERC20BurnableToken", function() {
+    console.log("Test ERC20Burnable.sol")
+
     let erc20Token: ERC20Burnable;
     const provider = waffle.provider;
-
     const [user1, user2, user3] = provider.getWallets()
-    console.log(user1.address)
-    console.log(user2.address)
-    console.log(user3.address)
-
+    
+    //before
     beforeEach(async () => {
       erc20Token = await deployContract(
           user1,
@@ -31,31 +30,50 @@ describe("ERC20BurnableToken", function() {
       await erc20Token.mint(user1.address, 10000)
     })
 
-    context('Deploy ERC20Burnable.sol', async () => {
-        context('Deploy ERC20Burnable.sol22', async () => {
-            it('has given data', async () => {
-                expect(await erc20Token.name()).to.be.equal("ERC20BurnableToken")
-                expect(await erc20Token.symbol()).to.be.equal("E2B")
-                expect(await erc20Token.decimals()).to.be.equal(0)
-            })
-        })
-
-        it('Should set the right owner', async () => {
+    context('ERC20Burnable Token', async () => {
+        it('1. Check deployed contract information', async () => {
+            expect(await erc20Token.name()).to.be.equal("ERC20BurnableToken")
+            expect(await erc20Token.symbol()).to.be.equal("E2B")
+            expect(await erc20Token.decimals()).to.be.equal(0)
+            
             expect(await erc20Token.owner()).to.be.equal(user1.address);
-        })
-
-        it('Total supply is 10000', async () => {
             expect(await erc20Token.totalSupply()).to.be.equal(10000)
-        })
-
-        it('check balance is 10000', async() => {
             expect(await erc20Token.balanceOf(user1.address)).to.be.equal(10000)
         })
-
-        it('transfer token from user1 to user2', async() => {
-            await erc20Token.transfer(user2.address, 1000);
+        it('2. Transfer token from user1 to user2', async() => {
+            await erc20Token.transfer(user2.address, 1000)
             expect(await erc20Token.balanceOf(user1.address)).to.be.equal(9000)
             expect(await erc20Token.balanceOf(user2.address)).to.be.equal(1000)
+            await expect(erc20Token.transfer(user2.address, 10000)).to.be.revertedWith('transfer amount exceeds balance.')
+        })
+        it('3. Transfer token from user2 to user3 by user1', async() => {
+            await erc20Token.transfer(user2.address, 1000)
+            await erc20Token.connect(user2).transfer(user3.address, 400)
+            await erc20Token.connect(user2).approve(user1.address, 100)
+            await erc20Token.connect(user1).transferFrom(user2.address, user3.address, 100)
+            // await erc20Token.approve(user1.address, 400);
+            // await erc20Token.connect(user1.address);
+            // await erc20Token.transferFrom(user2.address, user3.address, 400);
+            expect(await erc20Token.balanceOf(user1.address)).to.be.equal(9000)
+            expect(await erc20Token.balanceOf(user2.address)).to.be.equal(500)
+            expect(await erc20Token.balanceOf(user3.address)).to.be.equal(500)
+        })
+        it('4. Pause token', async() => {
+            await erc20Token.transfer(user2.address, 1000)
+            await erc20Token.connect(user1).pause()
+            expect(await erc20Token.paused()).to.be.equal(true)
+            await erc20Token.connect(user2).approve(user1.address, 100)
+            await expect(erc20Token.connect(user1).transferFrom(user2.address, user3.address, 100)).to.be.revertedWith('contract is paused.')
+            await erc20Token.connect(user1).unPause()
+            await erc20Token.connect(user1).transferFrom(user2.address, user3.address, 100)
+            expect(await erc20Token.balanceOf(user3.address)).to.be.equal(100)
+            // expect(await erc20Token.connect(user1).transfer(user2.address, 100)).to.be.revertedWith('contract is paused.')
+        })
+        it('5. Burn token', async() => {
+            await erc20Token.transfer(user2.address, 1000)
+            await expect(erc20Token.burn(10000)).to.be.revertedWith('burn amount exceeds balance.')
+            await erc20Token.burn(8000)
+            expect(await erc20Token.balanceOf(user1.address)).to.be.equal(1000)
         })
     })
 })
